@@ -1,3 +1,13 @@
-from django.shortcuts import render
+from django.views.generic import DetailView, ListView
 
-# Create your views here.
+from .models import *
+
+
+class QuestionView(DetailView):
+    model = Question
+    template_name = 'question.html'
+
+
+class QuestionsView(ListView):
+    model = Question
+    template_name = 'questions.html'
