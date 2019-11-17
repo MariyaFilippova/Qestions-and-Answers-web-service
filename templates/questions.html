@@ -1,6 +1,23 @@
+
 {% extends 'base.html' %}
 {% block content %}
     {% for object in object_list %}
         {% include 'question.html' %}
     {% endfor %}
+    <form action="" method="get">
+        <label>
+            <select name="selected_item">
+                <option label=" "></option>
+                <option label="ID" value="id">ID</option>
+                <option label="Name" value="title">Name</option>
+                <option label="Date" value="pub_date">Date</option>
+            </select>
+        </label>
+        <input type="submit">
+    </form>
+    <form action="{% url 'question-adding' %}" method="post">
+        {% csrf_token %}
+        {{ question_create_form }}
+        <input type="submit" value="Save">
+    </form>
 {% endblock %}
