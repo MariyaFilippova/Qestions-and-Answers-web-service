@@ -18,7 +18,7 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     answer = models.TextField(max_length=3000)
     likes = models.IntegerField()
     pub_date = models.DateField(auto_now=True)

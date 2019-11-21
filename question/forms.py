@@ -8,3 +8,7 @@ class QuestionsListForm(forms.Form):
 class QuestionCreateForm(forms.Form):
     title = forms.CharField(max_length=225)
     question = forms.CharField(max_length=3000, widget=forms.Textarea)
+
+
+class AnswerCreateForm(forms.Form):
+    answer = forms.CharField(max_length=3000, widget=forms.Textarea)
