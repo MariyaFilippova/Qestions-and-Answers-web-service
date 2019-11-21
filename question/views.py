@@ -1,5 +1,5 @@
 from django.shortcuts import resolve_url, get_object_or_404
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, DeleteView
 
 from question.forms import QuestionsListForm, QuestionCreateForm, AnswerCreateForm
 from .models import *
@@ -63,7 +63,7 @@ class QuestionCreate(CreateView):
 
     def get_success_url(self):
         print(object)
-        return resolve_url('/questions/', pk=self.object.pk)
+        return resolve_url('detail', pk=self.object.pk)
 
 
 class AnswerCreate(CreateView):
@@ -78,4 +78,11 @@ class AnswerCreate(CreateView):
         return super(AnswerCreate, self).form_valid(form)
 
     def get_success_url(self):
-        return resolve_url('/questions/', pk=self.object.pk)
+        return resolve_url('detail', pk=self.request.POST.get('question_id'))
+
+
+class AnswerDelete(DeleteView):
+    model = Answer
+
+    def get_success_url(self):
+        return resolve_url('detail', pk=self.request.POST.get('question_id'))

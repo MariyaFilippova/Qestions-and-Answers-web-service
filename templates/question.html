@@ -6,6 +6,11 @@
 <br>
 {% for answer in answers_all %}
     {{ answer.answer }}
+    <form action="{% url 'answer-deleting' answer.pk %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="question_id" value="{{ object.pk }}">
+        <input type="submit" value="Delete">
+    </form>
 {% endfor %}
 
 <div>
@@ -16,7 +21,3 @@
         <input type="submit" value="Save">
     </form>
 </div>
-
-
-
-
