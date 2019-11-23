@@ -8,4 +8,5 @@ urlpatterns = [
     path('add_answer', AnswerCreate.as_view(), name='answer-adding'),
     path('', QuestionsList.as_view(), name='questions-list'),
     path('delete_answer/<int:pk>', AnswerDelete.as_view(), name='answer-deleting'),
+    path('answer-liked', update_answer_liked, name='answer-liked'),
 ]

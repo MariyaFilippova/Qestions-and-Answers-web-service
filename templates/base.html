@@ -5,9 +5,31 @@
     <title>StackOverFlow</title>
 </head>
 <body>
-<div class="content">
-    {% block content %}
-    {% endblock %}
+<div>
+    {% for topic in queryset %}
+
+        {{ topic.name }}
+    {% endfor %}
+
+    <ul class="nav navbar-nav">{% load menubuilder %}{% menu main %}
+        {% for item in menuitems %}
+            <li>
+                <a href="{{ item.url }}" title="{{ item.title|escape }}"{% if item.current %}
+                   class='current active'{% endif %}>{{ item.title }}</a>
+                {% if submenu_items %}
+                    <ul>
+                        {% for submenu_items in submenu_items %}
+                            <li>{{ submenu_items }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
 </div>
+{% block content %}
+{% endblock %}
+
+
 </body>
 </html>

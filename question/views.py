@@ -1,5 +1,7 @@
+from django.http import HttpResponse
 from django.shortcuts import resolve_url, get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView, DeleteView
+from menu.models import Menu
 
 from question.forms import QuestionsListForm, QuestionCreateForm, AnswerCreateForm
 from .models import *
@@ -7,7 +9,7 @@ from .models import *
 
 class QuestionView(DetailView):
     model = Question
-    template_name = 'question.html'
+    template_name = 'questions/question.html'
     context_object_name = 'answer'
 
     def dispatch(self, request, pk=None, *args, **kwargs):
@@ -30,7 +32,7 @@ class QuestionView(DetailView):
 
 class QuestionsList(ListView):
     model = Question
-    template_name = 'questions.html'
+    template_name = 'questions/questions.html'
 
     def dispatch(self, request, *args, **kwargs):
         self.form = QuestionsListForm(request.GET)
@@ -49,12 +51,13 @@ class QuestionsList(ListView):
         context = super(QuestionsList, self).get_context_data(**kwargs)
         context['question_create_form'] = self.question_create_form
         context['form'] = self.form
+        context['menu'] = Menu.objects.all()
         return context
 
 
 class QuestionCreate(CreateView):
     model = Question
-    template_name = 'questions/create.html'
+    template_name = 'questions/create_question.html'
     fields = ['title', 'question']
 
     def form_valid(self, form):
@@ -62,7 +65,6 @@ class QuestionCreate(CreateView):
         return super(QuestionCreate, self).form_valid(form)
 
     def get_success_url(self):
-        print(object)
         return resolve_url('detail', pk=self.object.pk)
 
 
@@ -86,3 +88,12 @@ class AnswerDelete(DeleteView):
 
     def get_success_url(self):
         return resolve_url('detail', pk=self.request.POST.get('question_id'))
+
+
+def update_answer_liked(request):
+    pk = request.GET.get('pk')
+    answer = Answer.objects.all().get(pk=pk)
+    answer.likes = answer.likes + 1
+    answer.save()
+
+    return HttpResponse({answer.likes})
