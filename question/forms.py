@@ -2,7 +2,7 @@ from django import forms
 
 
 class QuestionsListForm(forms.Form):
-    selected_item = forms.ChoiceField(choices=(('id', 'ID'), ('title', 'Name'), ('pub_date', 'Date')))
+    search_field = forms.CharField(max_length=225)
 
 
 class QuestionCreateForm(forms.Form):

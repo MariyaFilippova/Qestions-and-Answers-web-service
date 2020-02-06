@@ -35,6 +35,7 @@ class QuestionsList(ListView):
     template_name = 'questions/questions.html'
 
     def dispatch(self, request, *args, **kwargs):
+        self.selected_topic = request.GET.get("topic_pk")
         self.form = QuestionsListForm(request.GET)
         self.question_create_form = QuestionCreateForm(request.POST)
         return super(QuestionsList, self).dispatch(request, *args, **kwargs)
@@ -42,11 +43,14 @@ class QuestionsList(ListView):
     def get_queryset(self):
         queryset = Question.objects.all()
         if self.form.is_valid():
-            if self.form.cleaned_data['selected_item']:
-                queryset = queryset.order_by(self.form.cleaned_data['selected_item'])[:10]
+            print(self.form.cleaned_data.get('search_field'))
+            if self.form.cleaned_data.get('search_field'):
+                print("no query set")
+                queryset = queryset.filter(question__contains=self.form.cleaned_data['search_field'])
         return queryset
 
-    # Словарик формы, отправляющийся в шаблон для рендера (форма может себя печатать)
+        # Словарик формы, отправляющийся в шаблон для рендера (форма может себя печатать)
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(QuestionsList, self).get_context_data(**kwargs)
         context['question_create_form'] = self.question_create_form

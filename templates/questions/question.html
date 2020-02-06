@@ -1,6 +1,8 @@
 <script type="text/javascript"
         src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="../../static/js/question/like_answer.js"></script>
+<link rel="stylesheet" type="text/css" href="../../static/css/question.css">
+{% extends 'base.html' %}
 {% load static %}
 {% block content %}
     <h1> Title :{{ object.title }} </h1>
@@ -8,13 +10,12 @@
     <div>Question: {{ object.question }}</div>
     <br>
     <div> {{ object.pub_date }}</div>
-    <br>
     <div> The author: {{ object.user }}</div>
     {% for answer in answers_all %}
         {{ answer.answer }}
-        Likes<input action="{% url 'answer-liked' %}" type="button" data-question_id="{{ object.pk }}"
-                    id="button-like{{ answer.pk }}" value="{{ answer.likes }}"
-                    onclick="add_like({{ answer.likes }}, {{ answer.pk }})">
+        Likes <input action="{% url 'answer-liked' %}" type="button" data-question_id="{{ object.pk }}"
+                     id="button-like{{ answer.pk }}" value="{{ answer.likes }}"
+                     onclick="add_like({{ answer.likes }}, {{ answer.pk }})">
         <form action="{% url 'answer-deleting' answer.pk %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="question_id" value="{{ object.pk }}">

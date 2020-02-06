@@ -10,7 +10,7 @@ class Question(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.TextField(max_length=225)
     question = models.TextField(max_length=3000)
-    topic = models.ManyToManyField(Topic, default=0, related_name='topic')
+    topics = models.ManyToManyField(Topic)
     pub_date = models.DateField(auto_now=True)
 
     def __str__(self):
